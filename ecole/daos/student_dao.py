@@ -23,12 +23,19 @@ class StudentDao(Dao[Student]):
             sql = ("""
                     SELECT * FROM student
                     LEFT JOIN person ON person.id_person = student.id_person
+                    LEFT JOIN takes ON student.student_nbr = takes.student_nbr
                     WHERE student.student_nbr=%s
                     """)
             cursor.execute(sql, (student_nbr,))
             record = cursor.fetchone()
         if record is not None:
             student = Student(record['first_name'], record['last_name'], record['age'])
+            student.courses_taken.append(record['id_course'])
+
+            rec = cursor.fetchall()
+            for r in rec:
+                if r['takes.student_nbr'] == student_nbr:
+                    student.courses_taken.append(r['id_course'])
         else:
             student = None
 
