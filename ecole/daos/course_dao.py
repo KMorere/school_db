@@ -41,8 +41,9 @@ class CourseDao(Dao[Course]):
             cursor.execute(sql, (id_course,))
             record = cursor.fetchone()
         if record is not None:
-            course = Course(record['name'], record['start_date'], record['end_date'])
+            course = Course(record['name'], record['start_date'], record['end_date'], record['id_teacher'])
             course.id = record['id_course']
+            course.id_teacher = record['id_teacher']
         else:
             course = None
 
@@ -53,12 +54,15 @@ class CourseDao(Dao[Course]):
         course: Optional[list[Course]]
 
         with Dao.connection.cursor() as cursor:
-            sql = "SELECT * FROM course"
+            sql = """
+            SELECT * FROM course
+            LEFT JOIN teacher ON teacher.id_teacher = course.id_teacher
+            """
             cursor.execute(sql)
             record = cursor.fetchall()
         if record is not None:
             course = [Course(
-                rec['name'], rec['start_date'], rec['end_date'])
+                rec['name'], rec['start_date'], rec['end_date'], rec['id_teacher'])
                 for rec in record]
         else:
             course = None
@@ -74,7 +78,7 @@ class CourseDao(Dao[Course]):
         with Dao.connection.cursor() as cursor:
             sql = ("INSERT INTO course (id_course, name, start_date, end_date, id_teacher) VALUES"
                    "(%s, %s, %s, %s, %s)")
-            data = [course]
+            data = [course.id, course.name, course.start_date, course.end_date, course.teacher.id]
             cursor.execute(sql, data)
             print(cursor.rowcount)
 

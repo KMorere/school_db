@@ -23,7 +23,7 @@ class TeacherDao(Dao[Teacher]):
             sql = ("""
                     SELECT * FROM teacher
                     LEFT JOIN person ON person.id_person = teacher.id_person
-                    WHERE teacher.id_person=%s
+                    WHERE teacher.id_teacher=%s
                     """)
             cursor.execute(sql, (id_person,))
             record = cursor.fetchone()

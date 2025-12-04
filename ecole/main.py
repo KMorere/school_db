@@ -21,7 +21,7 @@ def main() -> None:
     #school.init_static()
 
     # affichage de la liste des cours, leur enseignant et leurs élèves
-    #school.display_courses_list()
+    school.display_courses_list()
 
     # print(school.get_course_by_id(1))
     # print(school.get_course_by_id(2))
@@ -29,6 +29,7 @@ def main() -> None:
 
     print(school.get_student_by_id(1))
     print(school.get_teacher_by_id(4))
+    print(school.get_course_by_id(4))
     print()
 
     print("Teachers :")

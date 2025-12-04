@@ -33,6 +33,7 @@ class Course:
     name: str
     start_date: date
     end_date: date
+    id_teacher: int
     teacher: Optional[Teacher] = field(default=None, init=False)
     students_taking_it: list[Student] = field(default_factory=list, init=False)
 

@@ -16,12 +16,16 @@ class StudentDao(Dao[Student]):
         ...
         return 0
 
-    def read(self, id_person: int) -> Optional[Student]:
+    def read(self, student_nbr: int) -> Optional[Student]:
         student: Optional[Student]
 
         with Dao.connection.cursor() as cursor:
-            sql = "SELECT * FROM person WHERE id_person=%s"
-            cursor.execute(sql, (id_person,))
+            sql = ("""
+                    SELECT * FROM student
+                    LEFT JOIN person ON person.id_person = student.id_person
+                    WHERE student.student_nbr=%s
+                    """)
+            cursor.execute(sql, (student_nbr,))
             record = cursor.fetchone()
         if record is not None:
             student = Student(record['first_name'], record['last_name'], record['age'])
@@ -35,7 +39,10 @@ class StudentDao(Dao[Student]):
         student: Optional[list[Student]]
 
         with Dao.connection.cursor() as cursor:
-            sql = "SELECT * FROM person"
+            sql = ("""
+                    SELECT * FROM student
+                    LEFT JOIN person ON person.id_person = student.id_person
+                    """)
             cursor.execute(sql)
             record = cursor.fetchall()
         if record is not None:
