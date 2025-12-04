@@ -47,7 +47,7 @@ class School:
         - la liste des élèves le suivant"""
         for course in self.get_courses():
             print(f"cours de {course}")
-            for student in course.students_taking_it: # TODO
+            for student in self.get_students(): # TODO
                 print(f"- {student}")
             print()
 
@@ -64,14 +64,19 @@ class School:
             c.teacher = self.get_teacher_by_id(c.id_teacher)
         return course
 
-    @staticmethod
-    def get_student_by_id(id_person: int):
+    def get_student_by_id(self, id_person: int):
         student_dao: StudentDao = StudentDao()
-        return student_dao.read(id_person)
+        student = student_dao.read(id_person)
+        for i, course in enumerate(student.courses_taken):
+            student.courses_taken[i] = self.get_course_by_id(course)
+        return student
 
-    @staticmethod
-    def get_students():
+    def get_students(self):
         student_dao: StudentDao = StudentDao()
+        students = student_dao.read_all()
+        for j, student in enumerate(students):
+            for i, course in enumerate(student.courses_taken):
+                student.courses_taken[i] = self.get_course_by_id(course)
         return student_dao.read_all()
 
     @staticmethod

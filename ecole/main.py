@@ -23,18 +23,14 @@ def main() -> None:
     # affichage de la liste des cours, leur enseignant et leurs élèves
     school.display_courses_list()
 
-    # print(school.get_course_by_id(1))
-    # print(school.get_course_by_id(2))
-    # print(school.get_course_by_id(9))
-
-    print(school.get_student_by_id(1).courses_taken)
+    print(school.get_student_by_id(1))
     print(school.get_teacher_by_id(4))
     print(school.get_course_by_id(4))
     print()
 
-    print("Teachers :")
-    for teacher in school.get_teachers():
-        print(teacher)
+    print("Students :")
+    for student in school.get_students():
+        print(student)
 
 
 if __name__ == '__main__':

@@ -30,6 +30,7 @@ class StudentDao(Dao[Student]):
             record = cursor.fetchone()
         if record is not None:
             student = Student(record['first_name'], record['last_name'], record['age'])
+            student.student_nbr = record['student_nbr']
             student.courses_taken.append(record['id_course'])
 
             rec = cursor.fetchall()
@@ -54,6 +55,8 @@ class StudentDao(Dao[Student]):
             record = cursor.fetchall()
         if record is not None:
             student = [Student(rec['first_name'], rec['last_name'], rec['age']) for rec in record]
+            for i, rec in enumerate(record):
+                student[i].student_nbr = rec['student_nbr']
         else:
             student = None
 
